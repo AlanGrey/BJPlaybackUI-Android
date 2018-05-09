@@ -66,7 +66,8 @@ public class PBRoomUI {
         intent.putExtra(ConstantUtil.PB_ROOM_TOKEN, roomToken);
         intent.putExtra(ConstantUtil.PB_ROOM_SESSION_ID, sessionId);
         intent.putExtra(ConstantUtil.PB_ROOM_DEPLOY, deployType.getType());
-        context.startActivity(intent);
+        ((Activity) context).startActivityForResult(intent, 9800);
+
     }
 
     public static void enterLocalPBRoom(Context context, String roomId, String videoPath, String signalPath, LPConstants.LPDeployType deployType,
@@ -98,6 +99,7 @@ public class PBRoomUI {
         intent.putExtra(ConstantUtil.PB_ROOM_SIGNALFILE_PATH, signalPath);
         intent.putExtra(ConstantUtil.PB_ROOM_DEPLOY, deployType.getType());
         context.startActivity(intent);
+        ((Activity) context).startActivityForResult(intent, 9800);
     }
 
     public interface OnEnterPBRoomFailedListener {

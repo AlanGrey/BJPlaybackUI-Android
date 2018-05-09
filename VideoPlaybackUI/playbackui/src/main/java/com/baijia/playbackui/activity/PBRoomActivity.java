@@ -123,6 +123,9 @@ public class PBRoomActivity extends PBBaseActivity implements LPLaunchListener, 
 
     private boolean isShowingError;
 
+    private int currentProgress = 0;
+    private int totalProgress = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // 5.0+ 打开硬件加速
@@ -658,6 +661,12 @@ public class PBRoomActivity extends PBBaseActivity implements LPLaunchListener, 
             definitionContainer.setLayoutManager(manager);
             definitionContainer.setAdapter(definitionAdapter);
         } else {
+            if (currentProgress != 0 && totalProgress != 0) {
+                Intent intent = new Intent();
+                float progress = currentProgress * 100 / totalProgress;
+                intent.putExtra("progress", progress);
+                setResult(9801, intent);
+            }
             super.onBackPressed();
         }
     }
@@ -790,7 +799,9 @@ public class PBRoomActivity extends PBBaseActivity implements LPLaunchListener, 
 
         @Override
         public void onSeekComplete(BJPlayerView playerView, int position) {
-
+            if (position > currentProgress) {
+                currentProgress = position;
+            }
         }
 
         @Override
@@ -812,6 +823,7 @@ public class PBRoomActivity extends PBBaseActivity implements LPLaunchListener, 
                 bigPlaceHolder.setVisibility(View.VISIBLE);
             }
             isVideoOn = true;
+            currentProgress = totalProgress;
         }
 
         @Override
@@ -819,6 +831,7 @@ public class PBRoomActivity extends PBBaseActivity implements LPLaunchListener, 
 //            if (launchStepDlg != null) {
 //                launchStepDlg.dismiss();
 //            }
+            totalProgress = playerView.getDuration();
         }
 
         @Override
